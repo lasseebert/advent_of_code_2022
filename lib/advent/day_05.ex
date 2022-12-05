@@ -41,8 +41,8 @@ defmodule Advent.Day05 do
         end
       end)
 
-    dest = top_crates ++ dest
     source = Enum.drop(source, move.amount)
+    dest = top_crates ++ dest
 
     crates
     |> Map.put(move.source, source)
@@ -74,6 +74,7 @@ defmodule Advent.Day05 do
     {crates, moves}
   end
 
+  # Returns a map of {stack_number => [crate]}
   defp parse_crates(lines) do
     lines
     |> Enum.map(fn line ->
