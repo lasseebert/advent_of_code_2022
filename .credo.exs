@@ -120,7 +120,6 @@
           #
           {Credo.Check.Refactor.Apply, []},
           {Credo.Check.Refactor.CondStatements, []},
-          {Credo.Check.Refactor.CyclomaticComplexity, []},
           {Credo.Check.Refactor.FunctionArity, []},
           {Credo.Check.Refactor.LongQuoteBlocks, []},
           {Credo.Check.Refactor.MatchInCondition, []},
@@ -158,6 +157,7 @@
         ],
         disabled: [
           {Credo.Check.Refactor.MapJoin, []},
+          {Credo.Check.Refactor.CyclomaticComplexity, []},
           #
           # Checks scheduled for next check update (opt-in for now, just replace `false` with `[]`)
 
