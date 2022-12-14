@@ -55,23 +55,12 @@ defmodule Advent.Day14 do
 
   # Sand is flowing
   defp flow(still_sand, [lowest | flow_sand], cave) do
-    [
-      {0, 1},
-      {-1, 1},
-      {1, 1}
-    ]
+    [{0, 1}, {-1, 1}, {1, 1}]
     |> Enum.map(&add(lowest, &1))
-    |> Enum.find(fn new_pos ->
-      new_pos not in still_sand and not cave.rock?.(new_pos)
-    end)
+    |> Enum.find(fn new_pos -> new_pos not in still_sand and not cave.rock?.(new_pos) end)
     |> case do
-      nil ->
-        still_sand
-        |> MapSet.put(lowest)
-        |> flow(flow_sand, cave)
-
-      new_pos ->
-        flow(still_sand, [new_pos, lowest | flow_sand], cave)
+      nil -> still_sand |> MapSet.put(lowest) |> flow(flow_sand, cave)
+      new_pos -> flow(still_sand, [new_pos, lowest | flow_sand], cave)
     end
   end
 
