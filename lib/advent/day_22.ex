@@ -36,9 +36,10 @@ defmodule Advent.Day22 do
       |> Enum.map(fn {x, y} -> {div(x, dice_size), div(y, dice_size)} end)
       |> build_dice()
 
-    dice_reverse_map = Enum.into(dice_map, %{}, fn {section, {side, turn}} ->
-      {side, {section, turn}}
-    end)
+    dice_reverse_map =
+      Enum.into(dice_map, %{}, fn {section, {side, turn}} ->
+        {side, {section, turn}}
+      end)
 
     dice = %{
       map: dice_map,
@@ -167,70 +168,76 @@ defmodule Advent.Day22 do
     section = divide(coord, dice.size)
     {side, turn} = Map.fetch!(dice.map, section)
 
-    {next_side, next_turn} = case {side, turn, heading} do
-      {{1, 0, 0}, 0, :east} -> {{0, -1, 0}, 0}
-      {{1, 0, 0}, 0, :south} -> {{0, 0, -1}, 0}
-      {{1, 0, 0}, 0, :west} -> {{0, 1, 0}, 0}
-      {{-1, 0, 0}, 1, :north} -> {{0, -1, 0}, 1}
-      {{-1, 0, 0}, 3, :east} -> {{0, 0, -1}, 1}
-      {{-1, 0, 0}, 3, :west} -> {{0, 0, 1}, 1}
-      {{0, 1, 0}, 0, :south} -> {{0, 0, -1}, 1}
-      {{0, 1, 0}, 3, :west} -> {{0, 0, 1}, 2}
-      {{0, 1, 0}, 3, :north} -> {{1, 0, 0}, 3}
-      {{0, -1, 0}, 3, :south} -> {{1, 0, 0}, 3}
-      {{0, -1, 0}, 3, :east} -> {{0, 0, -1}, 2}
-      {{0, 0, 1}, 0, :south} -> {{1, 0, 0}, 0}
-      {{0, 0, 1}, 0, :west} -> {{0, 1, 0}, 1}
-      {{0, 0, 1}, 0, :north} -> {{-1, 0, 0}, 2}
-      {{0, 0, 1}, 3, :east} -> {{1, 0, 0}, 3}
-      {{0, 0, -1}, 0, :north} -> {{1, 0, 0}, 0}
-      {{0, 0, -1}, 0, :east} -> {{0, -1, 0}, 1}
-      {{0, 0, -1}, 0, :south} -> {{-1, 0, 0}, 2}
-      {{0, 0, -1}, 3, :west} -> {{1, 0, 0}, 3}
-      {{0, 0, -1}, 3, :south} -> {{0, 1, 0}, 2}
-    end
+    {next_side, next_turn} =
+      case {side, turn, heading} do
+        {{1, 0, 0}, 0, :east} -> {{0, -1, 0}, 0}
+        {{1, 0, 0}, 0, :south} -> {{0, 0, -1}, 0}
+        {{1, 0, 0}, 0, :west} -> {{0, 1, 0}, 0}
+        {{-1, 0, 0}, 1, :north} -> {{0, -1, 0}, 1}
+        {{-1, 0, 0}, 3, :east} -> {{0, 0, -1}, 1}
+        {{-1, 0, 0}, 3, :west} -> {{0, 0, 1}, 1}
+        {{0, 1, 0}, 0, :south} -> {{0, 0, -1}, 1}
+        {{0, 1, 0}, 3, :west} -> {{0, 0, 1}, 2}
+        {{0, 1, 0}, 3, :north} -> {{1, 0, 0}, 3}
+        {{0, -1, 0}, 3, :south} -> {{1, 0, 0}, 3}
+        {{0, -1, 0}, 3, :east} -> {{0, 0, -1}, 2}
+        {{0, 0, 1}, 0, :south} -> {{1, 0, 0}, 0}
+        {{0, 0, 1}, 0, :west} -> {{0, 1, 0}, 1}
+        {{0, 0, 1}, 0, :north} -> {{-1, 0, 0}, 2}
+        {{0, 0, 1}, 3, :east} -> {{1, 0, 0}, 3}
+        {{0, 0, -1}, 0, :north} -> {{1, 0, 0}, 0}
+        {{0, 0, -1}, 0, :east} -> {{0, -1, 0}, 1}
+        {{0, 0, -1}, 0, :south} -> {{-1, 0, 0}, 2}
+        {{0, 0, -1}, 3, :west} -> {{1, 0, 0}, 3}
+        {{0, 0, -1}, 3, :south} -> {{0, 1, 0}, 2}
+      end
 
     {next_section, next_section_turn} = Map.fetch!(dice.reverse_map, next_side)
 
     combined_turn = rem(next_turn - next_section_turn + 4, 4)
 
     dice_coord = remain(coord, dice.size)
-    next_dice_coord = case {dice_coord, heading} do
-      {{_x, y}, :east} -> {0, y}
-      {{_x, y}, :west} -> {dice.size - 1, y}
-      {{x, _y}, :south} -> {x, 0}
-      {{x, _y}, :north} -> {x, dice.size - 1}
-    end
 
-    next_dice_coord_turned = case {next_dice_coord, combined_turn} do
-      {{x, y}, 0} -> {x, y}
-      {{x, y}, 1} -> {y, dice.size - 1 - x}
-      {{x, y}, 2} -> {dice.size - 1 - x, dice.size - 1 - y}
-      {{x, y}, 3} -> {dice.size - 1 - y, x}
-    end
+    next_dice_coord =
+      case {dice_coord, heading} do
+        {{_x, y}, :east} -> {0, y}
+        {{_x, y}, :west} -> {dice.size - 1, y}
+        {{x, _y}, :south} -> {x, 0}
+        {{x, _y}, :north} -> {x, dice.size - 1}
+      end
+
+    next_dice_coord_turned =
+      case {next_dice_coord, combined_turn} do
+        {{x, y}, 0} -> {x, y}
+        {{x, y}, 1} -> {y, dice.size - 1 - x}
+        {{x, y}, 2} -> {dice.size - 1 - x, dice.size - 1 - y}
+        {{x, y}, 3} -> {dice.size - 1 - y, x}
+      end
 
     next_map_coord = next_section |> mult(dice.size) |> add(next_dice_coord_turned)
-    next_heading = case {heading, combined_turn} do
-      {heading, 0} -> heading
-      {:east, 1} -> :north
-      {:east, 2} -> :west
-      {:east, 3} -> :south
-      {:west, 1} -> :south
-      {:west, 2} -> :east
-      {:west, 3} -> :north
-      {:south, 2} -> :north
-      {:south, 3} -> :west
-      {:north, 2} -> :south
-      {:north, 3} -> :east
-    end
+
+    next_heading =
+      case {heading, combined_turn} do
+        {heading, 0} -> heading
+        {:east, 1} -> :north
+        {:east, 2} -> :west
+        {:east, 3} -> :south
+        {:west, 1} -> :south
+        {:west, 2} -> :east
+        {:west, 3} -> :north
+        {:south, 2} -> :north
+        {:south, 3} -> :west
+        {:north, 2} -> :south
+        {:north, 3} -> :east
+      end
 
     {next_map_coord, next_heading}
   end
 
   defp add({x1, y1}, {x2, y2}), do: {x1 + x2, y1 + y2}
   defp mult({x, y}, a), do: {x * a, y * a}
-  defp divide({x, y}, a), do: {div(x,  a), div(y, a)}
-  defp remain({x, y}, a), do: {rem(x,  a), rem(y, a)}
+  defp divide({x, y}, a), do: {div(x, a), div(y, a)}
+  defp remain({x, y}, a), do: {rem(x, a), rem(y, a)}
 
   defp start_pos(map) do
     map

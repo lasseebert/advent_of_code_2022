@@ -34,7 +34,6 @@ defmodule Advent.Day23 do
     |> then(fn {_, index} -> index + 1 end)
   end
 
-
   defp iterate(elves) do
     dirs = [
       [{-1, -1}, {0, -1}, {1, -1}],
