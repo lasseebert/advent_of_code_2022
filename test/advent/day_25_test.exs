@@ -28,7 +28,7 @@ defmodule Advent.Day25Test do
 
     @tag :puzzle_input
     test "puzzle input" do
-      assert Day25.part_1(@puzzle_input) == :foo
+      assert Day25.part_1(@puzzle_input) == "2=020-===0-1===2=020"
     end
   end
 end
