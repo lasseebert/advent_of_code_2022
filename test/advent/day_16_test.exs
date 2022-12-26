@@ -34,7 +34,6 @@ defmodule Advent.Day16Test do
       assert Day16.part_2(@example_input) == 1707
     end
 
-    @tag timeout: :infinity
     @tag :puzzle_input
     test "puzzle input" do
       assert Day16.part_2(@puzzle_input) == 2191

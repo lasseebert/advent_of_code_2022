@@ -29,12 +29,11 @@ defmodule Advent.Day16 do
 
   With you and an elephant working together for 26 minutes, what is the most pressure you could release?
 
-  Current solution runs in 8m13s!!!
+  Current solution runs in 21 seconds on my machine
   """
   @spec part_2(String.t()) :: integer
   def part_2(input) do
     time = 26
-
     cave = parse(input)
     distances = calc_distances(cave)
 
@@ -45,12 +44,13 @@ defmodule Advent.Day16 do
 
     valves
     |> permutations(time, distances)
-    |> Enum.map(fn human_permutation ->
+    |> Stream.reject(&length(&1) < div(length(valves), 2) - 1)
+    |> Stream.map(fn human_permutation ->
       human_pressure = calc_pressure(human_permutation, time, cave, distances)
 
       elephant_pressure =
         (valves -- human_permutation)
-        |> find_permutations("AA", time, distances)
+        |> permutations(time, distances)
         |> Enum.map(&calc_pressure(&1, time, cave, distances))
         |> Enum.max()
 

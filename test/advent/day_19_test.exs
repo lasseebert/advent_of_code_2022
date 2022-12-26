@@ -26,6 +26,7 @@ defmodule Advent.Day19Test do
       assert Day19.part_2(@example_input) == 56 * 62
     end
 
+    @tag :puzzle_input
     test "puzzle input" do
       assert Day19.part_2(@puzzle_input) == 4114
     end
